@@ -1,6 +1,7 @@
 'use strict';
 
 import { sum, sumN } from '../src/Utils';
+import * as utils from '../src/Utils';
 
 describe('utils', () => {
   describe('#sum()', () => {
@@ -37,7 +38,7 @@ describe('utils', () => {
       it('sums the numbers correctly', () => expect(actual).toBe(6));
     });
 
-    describe('when given 9 poositive numbers', () => {
+    describe('when given 9 positive numbers', () => {
       let actual: number;
 
       beforeAll(() => {
@@ -45,6 +46,25 @@ describe('utils', () => {
       });
 
       it('sums the numbers correctly', () => expect(actual).toBe(12));
+    });
+
+    describe('when given 2 positive numbers', () => {
+      let actual: number;
+      let sumSpy;
+
+      beforeAll(() => {
+        sumSpy = jest.spyOn(utils, 'sum');
+        sumSpy.mockImplementation((a, b) => 2);
+
+        actual = sumN(1, 2, 3, 4);
+      });
+
+      afterAll(() => {
+        jest.clearAllMocks();
+      });
+
+      it('sums the numbers correctly', () => expect(actual).toBe(2));
+      it('should have been called 3 times', () => expect(sumSpy).toBeCalledTimes(3));
     });
   });
 });
